@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h3>Edit StuInfo</h3>
+<form method="post">
+    学号 <input type="text" name="stuNo" autocomplete="off" required value="{{ stuInfo.stuNo }}">
+    班级 <input type="text" name="stuClass" autocomplete="off" required value="{{ stuInfo.stuClass }}">
+    教师 <input type="text" name="teacher" autocomplete="off" required value="{{ stuInfo.teacher }}">
+    <input class="btn" type="submit" name="submit" value="Update">
+</form>
+{% endblock %}

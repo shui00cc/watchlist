@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<p>{{ stuInfos|length }} 学号信息</p>
+
+<form method="post">
+    学号 <input type="text" name="contentNo" required>
+    <input class="btn" type="submit" name="submit" value="search">
+</form>
+
+{% if current_user.is_authenticated %}
+<form method="post">
+    学号 <input type="text" name="stuNo" autocomplete="off" required>
+    班级 <input type="text" name="stuClass" autocomplete="off" required>
+    教师 <input type="text" name="teacher" autocomplete="off" required>
+    <input class="btn" type="submit" name="submit" value="Add">
+</form>
+{% endif %}
+
+<ul class="student-list">
+    {% for stuInfo, student in stuDict %}
+    <li>
+        {{ stuInfo.stuNo }} - {{ student.name }} -{{ stuInfo.stuClass }} - {{ stuInfo.teacher }}
+        <span class="float-right">
+            {% if current_user.is_authenticated %}
+            <a class="btn" href="{{ url_for('editInfo', stu_No=stuInfo.stuNo) }}">Edit</a>
+            <form class="inline-form" method="post" action="{{ url_for('deleteInfo', stu_No=stuInfo.stuNo) }}">
+                <input class="btn" type="submit" name="delete" value="Delete" onclick="return confirm('Are you sure?')">
+            </form>
+            {% endif %}
+        </span>
+    </li>
+    {% endfor %}
+</ul>
+{% endblock %}

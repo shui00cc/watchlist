@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<p>{{ students|length }} Students</p>
+
+<form method="post">
+    姓名 <input type="text" name="content" required>
+    <input class="btn" type="submit" name="submit" value="search">
+</form>
+
+{% if current_user.is_authenticated %}
+<form method="post">
+    姓名 <input type="text" name="name" autocomplete="off" required>
+    温度 <input type="text" name="temper" autocomplete="off" required>
+    学号 <input type="text" name="stuNo" autocomplete="off" required>
+    <input class="btn" type="submit" name="submit" value="Add">
+</form>
+{% endif %}
+
+<ul class="student-list">
+    {% for student in students %}
+    <li>
+        {% if student.temper[:2]|int >= 38 %}
+            {{ student.name }} - <span style="color: red;">{{ student.temper }}</span> - {{ student.stuNo }}
+        {% else %}
+            {{ student.name }} - {{ student.temper }} - {{ student.stuNo }}
+        {% endif %}
+        <span class="float-right">
+            {% if current_user.is_authenticated %}
+            <a class="btn" href="{{ url_for('edit', student_id=student.id) }}">Edit</a>
+            <form class="inline-form" method="post" action="{{ url_for('delete', student_id=student.id) }}">
+                <input class="btn" type="submit" name="delete" value="Delete" onclick="return confirm('Are you sure?')">
+            </form>
+            {% endif %}
+        </span>
+    </li>
+    {% endfor %}
+</ul>
+{% endblock %}
